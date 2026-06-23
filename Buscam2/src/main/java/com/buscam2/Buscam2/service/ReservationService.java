@@ -1,11 +1,11 @@
 package com.buscam2.Buscam2.service;
 
-import com.buscam.dto.Dto.*;
-import com.buscam.entity.Reservation;
-import com.buscam.entity.Trajet;
-import com.buscam.entity.User;
-import com.buscam.repository.ReservationRepository;
-import com.buscam.repository.TrajetRepository;
+import com.buscam2.Buscam2.dto.Dto.*;
+import com.buscam2.Buscam2.entity.Reservation;
+import com.buscam2.Buscam2.entity.Trajet;
+import com.buscam2.Buscam2.entity.User;
+import com.buscam2.Buscam2.repository.ReservationRepository;
+import com.buscam2.Buscam2.repository.TrajetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -88,7 +88,7 @@ public class ReservationService {
         Reservation saved = reservationRepository.save(reservation);
         saved.setTrajet(trajet); // injecter pour éviter LazyInitializationException
 
-        log.info("✅ Réservation {} créée pour {} | Trajet : {} → {}",
+        log.info(" Réservation {} créée pour {} | Trajet : {} → {}",
                 numeroBillet, currentUser.getEmail(),
                 trajet.getVilleDepart(), trajet.getVilleArrivee());
 
@@ -139,7 +139,7 @@ public class ReservationService {
         Reservation updated = reservationRepository.save(reservation);
         updated.setTrajet(trajet);
 
-        log.info("❌ Réservation {} annulée par {}", reservation.getNumeroBillet(), currentUser.getEmail());
+        log.info(" Réservation {} annulée par {}", reservation.getNumeroBillet(), currentUser.getEmail());
 
         return ReservationResponse.fromReservation(updated);
     }

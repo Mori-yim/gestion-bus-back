@@ -30,20 +30,17 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * ================================================================
- * CONFIGURATION SPRING SECURITY
- * ================================================================
- *
- * Cette classe configure :
- *   1. Quels endpoints sont publics vs protégés
- *   2. L'algorithme de hachage des mots de passe (BCrypt)
- *   3. Le filtre JWT (ajouté avant le filtre d'auth classique)
- *   4. CORS (autorise les requêtes du frontend React)
- *   5. Désactivation de CSRF (inutile avec JWT stateless)
- *
- * @EnableMethodSecurity : active @PreAuthorize("hasRole('ADMIN')")
- *                          sur les méthodes des controllers
- * ================================================================
+  CONFIGURATION SPRING SECURITY
+
+  Cette classe configure :
+    1. Quels endpoints sont publics vs protégés
+    2. L'algorithme de hachage des mots de passe (BCrypt)
+    3. Le filtre JWT (ajouté avant le filtre d'auth classique)
+    4. CORS (autorise les requêtes du frontend React)
+    5. Désactivation de CSRF (inutile avec JWT stateless)
+
+  @EnableMethodSecurity : active @PreAuthorize("hasRole('ADMIN')")
+                           sur les méthodes des controllers
  */
 @Configuration
 @EnableWebSecurity
@@ -58,8 +55,8 @@ public class SecurityConfig {
     private String allowedOrigins;
 
     /**
-     * Définit les règles de sécurité HTTP.
-     * C'est le "routeur" de Spring Security.
+      Définit les règles de sécurité HTTP.
+      C'est le "routeur" de Spring Security.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -73,7 +70,7 @@ public class SecurityConfig {
                 // Définir les règles d'autorisation par endpoint
                 .authorizeHttpRequests(auth -> auth
 
-                        // ---- ENDPOINTS PUBLICS (pas besoin de token) ----
+                        //ENDPOINTS PUBLICS (pas besoin de token)
 
                         // Authentification : inscription et connexion
                         .requestMatchers("/api/v1/auth/**").permitAll()
@@ -82,13 +79,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/trajets/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/trajets/rechercher").permitAll()
 
-                        // ---- ENDPOINTS ADMIN SEULEMENT ----
+                        // ENDPOINTS ADMIN SEULEMENT
                         .requestMatchers(HttpMethod.POST, "/api/v1/trajets").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/trajets/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/trajets/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 
-                        // ---- TOUT LE RESTE : connecté (n'importe quel rôle) ----
+                        // TOUT LE RESTE : connecté (n'importe quel rôle)
                         .anyRequest().authenticated()
                 )
 
@@ -109,10 +106,10 @@ public class SecurityConfig {
     }
 
     /**
-     * Configuration CORS : autorise le frontend React à appeler notre API.
-     *
-     * CORS = Cross-Origin Resource Sharing
-     * Sans ça, le navigateur bloque les requêtes entre localhost:5173 et localhost:8080
+      Configuration CORS : autorise le frontend React à appeler notre API.
+
+      CORS = Cross-Origin Resource Sharing
+      Sans ça, le navigateur bloque les requêtes entre localhost:5173 et localhost:8080
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -141,8 +138,8 @@ public class SecurityConfig {
     }
 
     /**
-     * UserDetailsService : comment Spring Security charge un utilisateur.
-     * Ici on cherche par email dans notre BDD.
+      UserDetailsService : comment Spring Security charge un utilisateur.
+      Ici on cherche par email dans notre BDD.
      */
     @Bean
     public UserDetailsService userDetailsService() {
@@ -153,8 +150,8 @@ public class SecurityConfig {
     }
 
     /**
-     * AuthenticationProvider : combine le UserDetailsService et le PasswordEncoder.
-     * Vérifie que le mot de passe fourni correspond au hash en BDD.
+      AuthenticationProvider : combine le UserDetailsService et le PasswordEncoder.
+      Vérifie que le mot de passe fourni correspond au hash en BDD.
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -165,8 +162,8 @@ public class SecurityConfig {
     }
 
     /**
-     * AuthenticationManager : point d'entrée pour l'authentification.
-     * Utilisé dans AuthService pour valider email + mot de passe.
+      AuthenticationManager : point d'entrée pour l'authentification.
+      Utilisé dans AuthService pour valider email + mot de passe.
      */
     @Bean
     public AuthenticationManager authenticationManager(
@@ -176,12 +173,11 @@ public class SecurityConfig {
     }
 
     /**
-     * BCryptPasswordEncoder : hachage des mots de passe.
-     *
-     * BCrypt est un algorithme de hachage "salted" (résistant aux rainbow tables).
-     * Le "strength" 10 = 2^10 = 1024 rounds de hachage (bon équilibre sécurité/performance)
-     *
-     * JAMAIS stocker un mot de passe en clair !
+     BCryptPasswordEncoder : hachage des mots de passe.
+     BCrypt est un algorithme de hachage "salted" (résistant aux rainbow tables).
+     Le "strength" 10 = 2^10 = 1024 rounds de hachage (bon équilibre sécurité/performance)
+
+      JAMAIS stocker un mot de passe en clair !
      */
     @Bean
     public PasswordEncoder passwordEncoder() {

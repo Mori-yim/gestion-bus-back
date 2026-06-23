@@ -1,11 +1,11 @@
 package com.buscam2.Buscam2.service;
 
-import com.buscam.dto.Dto.*;
-import com.buscam.entity.Reservation;
-import com.buscam.entity.Trajet;
-import com.buscam.entity.User;
-import com.buscam.repository.ReservationRepository;
-import com.buscam.repository.TrajetRepository;
+import com.buscam2.Buscam2.dto.Dto.*;
+import com.buscam2.Buscam2.entity.Reservation;
+import com.buscam2.Buscam2.entity.Trajet;
+import com.buscam2.Buscam2.entity.User;
+import com.buscam2.Buscam2.repository.ReservationRepository;
+import com.buscam2.Buscam2.repository.TrajetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,9 +19,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * ================================================================
  * SERVICE TRAJET
- * ================================================================
  */
 @Service
 @RequiredArgsConstructor
@@ -104,142 +102,5 @@ public class TrajetService {
 
         trajet.setStatut(Trajet.StatutTrajet.ANNULE);
         return TrajetResponse.fromTrajet(trajetRepository.save(trajet));
-    }
-}
-
-
-/**
- * ================================================================
- * SERVICE RÉSERVATION
- * ================================================================
- */
-@Service
-@RequiredArgsConstructor
-@Slf4j
-class ReservationService {
-
-    private final ReservationRepository reservationRepository;
-    private final TrajetRepository trajetRepository;
-
-    /**
-     * Crée une nouvelle réservation.
-     *
-     * Cette méthode est @Transactional car elle modifie DEUX tables :
-     *   1. Crée une ligne dans "reservations"
-     *   2. Décrémente placesDisponibles dans "trajets"
-     *
-     * Si une erreur survient, les DEUX opérations sont annulées (rollback).
-     */
-    @Transactional
-    public ReservationResponse createReservation(CreateReservationRequest request, User currentUser) {
-
-        // 1. Récupérer le trajet avec verrouillage pessimiste
-        // (évite les conditions de course si 2 users réservent en même temps)
-        Trajet trajet = trajetRepository.findById(request.getTrajetId())
-                .orElseThrow(() -> new RuntimeException("Trajet non trouvé"));
-
-        // 2. Vérifier que le trajet est encore disponible
-        if (trajet.getStatut() != Trajet.StatutTrajet.PROGRAMME) {
-            throw new IllegalStateException("Ce trajet n'est plus disponible");
-        }
-
-        // 3. Vérifier qu'il y a assez de places
-        if (trajet.getPlacesDisponibles() < request.getNombrePlaces()) {
-            throw new IllegalStateException(
-                    "Pas assez de places disponibles. Restant : " + trajet.getPlacesDisponibles()
-            );
-        }
-
-        // 4. Calculer le montant total
-        BigDecimal montantTotal = trajet.getPrix()
-                .multiply(BigDecimal.valueOf(request.getNombrePlaces()));
-
-        // 5. Générer un numéro de billet unique
-        String numeroBillet = genererNumeroBillet();
-
-        // 6. Créer la réservation
-        Reservation reservation = Reservation.builder()
-                .user(currentUser)
-                .trajet(trajet)
-                .nombrePlaces(request.getNombrePlaces())
-                .montantTotal(montantTotal)
-                .numeroBillet(numeroBillet)
-                .modePaiement(request.getModePaiement())
-                // Simulation : en production, attendre la confirmation du paiement
-                .statut(Reservation.StatutReservation.CONFIRMEE)
-                .build();
-
-        // 7. Décrémenter les places disponibles du trajet
-        trajet.setPlacesDisponibles(trajet.getPlacesDisponibles() - request.getNombrePlaces());
-        trajetRepository.save(trajet);
-
-        // 8. Sauvegarder la réservation
-        Reservation saved = reservationRepository.save(reservation);
-        log.info("Réservation créée : {} pour {} ({})",
-                numeroBillet, currentUser.getEmail(), trajet.getVilleDepart() + "→" + trajet.getVilleArrivee());
-
-        // Recharger avec le trajet (pour éviter LazyInitializationException)
-        saved.setTrajet(trajet);
-        return ReservationResponse.fromReservation(saved);
-    }
-
-    /**
-     * Récupère toutes les réservations d'un utilisateur
-     */
-    public List<ReservationResponse> getMesReservations(Long userId) {
-        return reservationRepository.findByUserIdOrderByCreatedAtDesc(userId)
-                .stream()
-                .map(ReservationResponse::fromReservation)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Annule une réservation (par le client ou l'admin)
-     */
-    @Transactional
-    public ReservationResponse annulerReservation(Long reservationId, User currentUser) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new RuntimeException("Réservation non trouvée"));
-
-        // Seul le propriétaire ou un admin peut annuler
-        boolean isOwner = reservation.getUser().getId().equals(currentUser.getId());
-        boolean isAdmin = currentUser.getRole() == User.Role.ADMIN;
-
-        if (!isOwner && !isAdmin) {
-            throw new SecurityException("Vous n'êtes pas autorisé à annuler cette réservation");
-        }
-
-        // Vérifier que la réservation peut encore être annulée
-        if (reservation.getStatut() == Reservation.StatutReservation.ANNULEE) {
-            throw new IllegalStateException("Cette réservation est déjà annulée");
-        }
-
-        if (reservation.getStatut() == Reservation.StatutReservation.UTILISEE) {
-            throw new IllegalStateException("Impossible d'annuler une réservation déjà utilisée");
-        }
-
-        // Remettre les places disponibles
-        Trajet trajet = reservation.getTrajet();
-        trajet.setPlacesDisponibles(trajet.getPlacesDisponibles() + reservation.getNombrePlaces());
-        trajetRepository.save(trajet);
-
-        // Mettre à jour le statut
-        reservation.setStatut(Reservation.StatutReservation.ANNULEE);
-        Reservation updated = reservationRepository.save(reservation);
-
-        log.info("Réservation {} annulée par {}", reservation.getNumeroBillet(), currentUser.getEmail());
-
-        updated.setTrajet(trajet);
-        return ReservationResponse.fromReservation(updated);
-    }
-
-    /**
-     * Génère un numéro de billet unique au format : BC-YYYYMM-XXXXXXXX
-     * Exemple : BC-202412-A1B2C3D4
-     */
-    private String genererNumeroBillet() {
-        String datePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
-        String uniquePart = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-        return "BC-" + datePart + "-" + uniquePart;
     }
 }

@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ================================================================
  * ENTITÉ TRAJET (Trip)
- * ================================================================
+
  *
  * Représente un trajet de bus disponible à la réservation.
  * Ex : Douala → Yaoundé, départ 06h00, 45 places, 5000 FCFA
  *
  * Un Trajet contient plusieurs Réservations (OneToMany)
- * ================================================================
+
  */
 @Entity
 @Table(name = "trajets")
@@ -117,9 +116,7 @@ public class Trajet {
     @Builder.Default
     private List<Reservation> reservations = new ArrayList<>();
 
-    // ============================================================
     // MÉTHODES UTILITAIRES
-    // ============================================================
 
     /**
      * Calcule la durée du trajet en heures (arrondie)
@@ -135,9 +132,7 @@ public class Trajet {
         return placesDisponibles > 0;
     }
 
-    // ============================================================
     // ENUM STATUTS
-    // ============================================================
 
     public enum StatutTrajet {
         PROGRAMME,    // Le trajet est planifié et disponible

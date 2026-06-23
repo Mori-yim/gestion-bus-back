@@ -44,11 +44,9 @@ public class DataLoader {
                 return;
             }
 
-            log.info("🚀 Chargement des données de démonstration...");
+            log.info(" Chargement des données de démonstration...");
 
-            // -------------------------------------------------------
             // CRÉER LES UTILISATEURS DE DÉMO
-            // -------------------------------------------------------
 
             // Compte admin
             User admin = userRepository.save(User.builder()
@@ -70,15 +68,13 @@ public class DataLoader {
                     .role(User.Role.CLIENT)
                     .build());
 
-            log.info("✅ Utilisateurs créés : admin@buscam.cm / Client jean.kamga@gmail.com");
+            log.info(" Utilisateurs créés : admin@buscam.cm / Client jean.kamga@gmail.com");
 
-            // -------------------------------------------------------
             // CRÉER LES TRAJETS DE DÉMO
-            // -------------------------------------------------------
 
             LocalDateTime base = LocalDateTime.now();
 
-            // Trajet 1 : Douala → Yaoundé
+            // Trajet 1 : Douala -> Yaoundé
             trajetRepository.save(Trajet.builder()
                     .villeDepart("Douala")
                     .villeArrivee("Yaoundé")
@@ -91,7 +87,7 @@ public class DataLoader {
                     .numeroBus("LT-456-CD")
                     .build());
 
-            // Trajet 2 : Douala → Yaoundé (départ de soir)
+            // Trajet 2 : Douala -> Yaoundé (départ de soir)
             trajetRepository.save(Trajet.builder()
                     .villeDepart("Douala")
                     .villeArrivee("Yaoundé")
@@ -104,7 +100,7 @@ public class DataLoader {
                     .numeroBus("CE-789-YA")
                     .build());
 
-            // Trajet 3 : Yaoundé → Douala
+            // Trajet 3 : Yaoundé -> Douala
             trajetRepository.save(Trajet.builder()
                     .villeDepart("Yaoundé")
                     .villeArrivee("Douala")
@@ -117,7 +113,7 @@ public class DataLoader {
                     .numeroBus("DL-321-YA")
                     .build());
 
-            // Trajet 4 : Douala → Bafoussam
+            // Trajet 4 : Douala -> Bafoussam
             trajetRepository.save(Trajet.builder()
                     .villeDepart("Douala")
                     .villeArrivee("Bafoussam")
@@ -130,7 +126,7 @@ public class DataLoader {
                     .numeroBus("BF-654-DL")
                     .build());
 
-            // Trajet 5 : Yaoundé → Ngaoundéré
+            // Trajet 5 : Yaoundé -> Ngaoundéré
             trajetRepository.save(Trajet.builder()
                     .villeDepart("Yaoundé")
                     .villeArrivee("Ngaoundéré")
@@ -143,7 +139,7 @@ public class DataLoader {
                     .numeroBus("ND-112-YA")
                     .build());
 
-            // Trajet 6 : Douala → Limbé
+            // Trajet 6 : Douala -> Limbé
             trajetRepository.save(Trajet.builder()
                     .villeDepart("Douala")
                     .villeArrivee("Limbé")
@@ -156,15 +152,14 @@ public class DataLoader {
                     .numeroBus("LB-445-DL")
                     .build());
 
-            log.info("✅ 6 trajets de démo créés !");
+            log.info(" 6 trajets de démo créés !");
             log.info("""
+       
+                     COMPTES DE DÉMO :
                     
-                    ================================================
-                    📋 COMPTES DE DÉMO :
-                    
-                    👔 ADMIN  : admin@buscam.cm / Admin123!
-                    👤 CLIENT : jean.kamga@gmail.com / Client123!
-                    ================================================
+                     ADMIN  : admin@buscam.cm / Admin123!
+                     CLIENT : jean.kamga@gmail.com / Client123!
+                 
                     """);
         };
     }

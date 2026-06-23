@@ -11,9 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * ================================================================
  * ENTITÉ UTILISATEUR
- * ================================================================
  *
  * Cette classe représente un utilisateur en base de données.
  * Elle implémente UserDetails de Spring Security pour l'authentification JWT.
@@ -21,7 +19,6 @@ import java.util.List;
  * @Entity      : dit à JPA de créer une table "users" pour cette classe
  * @Table       : personnalise le nom de la table
  * @Getter/@Setter/@Builder : Lombok génère automatiquement les méthodes
- * ================================================================
  */
 @Entity
 @Table(name = "users")
@@ -87,11 +84,9 @@ public class User implements UserDetails {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // ============================================================
     // MÉTHODES DE UserDetails (Spring Security)
     // Ces méthodes permettent à Spring Security de gérer
     // l'authentification de cet utilisateur
-    // ============================================================
 
     /**
      * Retourne les rôles/permissions de l'utilisateur.
@@ -133,9 +128,7 @@ public class User implements UserDetails {
         return firstName + " " + lastName;
     }
 
-    // ============================================================
     // ENUM RÔLES
-    // ============================================================
 
     /**
      * Rôles possibles dans l'application :

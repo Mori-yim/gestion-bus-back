@@ -7,10 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * ================================================================
  * REPOSITORY UTILISATEUR
- * ================================================================
- *
+
  * JpaRepository<User, Long> fournit GRATUITEMENT :
  *   - save(user)         → INSERT ou UPDATE
  *   - findById(id)       → SELECT WHERE id = ?
@@ -20,7 +18,6 @@ import java.util.Optional;
  *
  * On ajoute seulement les méthodes dont on a besoin en plus.
  * Spring Data JPA génère le SQL automatiquement depuis le nom de la méthode !
- * ================================================================
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

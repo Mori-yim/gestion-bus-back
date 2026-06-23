@@ -10,13 +10,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * ================================================================
  * REPOSITORY TRAJET
- * ================================================================
- *
+
  * Méthodes de recherche pour la fonctionnalité principale :
  * "Chercher un trajet Douala → Yaoundé le 25/12/2024"
- * ================================================================
  */
 @Repository
 public interface TrajetRepository extends JpaRepository<Trajet, Long> {

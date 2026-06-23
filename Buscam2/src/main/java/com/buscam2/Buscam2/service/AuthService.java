@@ -1,9 +1,9 @@
 package com.buscam2.Buscam2.service;
 
-import com.buscam.dto.Dto.*;
-import com.buscam.entity.User;
-import com.buscam.repository.UserRepository;
-import com.buscam.security.JwtService;
+import com.buscam2.Buscam2.dto.Dto.*;
+import com.buscam2.Buscam2.entity.User;
+import com.buscam2.Buscam2.repository.UserRepository;
+import com.buscam2.Buscam2.security.JwtService;
 import com.buscam2.Buscam2.dto.Dto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * ================================================================
  * SERVICE D'AUTHENTIFICATION
- * ================================================================
- *
+
  * Gère l'inscription et la connexion des utilisateurs.
  * Produit des tokens JWT en cas de succès.
  *
@@ -26,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @Service  : marque cette classe comme un bean Spring (injectable)
  * @Transactional : chaque méthode s'exécute dans une transaction BDD
  *                  (rollback automatique si une exception est levée)
- * ================================================================
  */
 @Service
 @RequiredArgsConstructor

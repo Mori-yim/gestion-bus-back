@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * ================================================================
- * CONTROLLER AUTHENTIFICATION
- * ================================================================
- *
- * @RestController : combine @Controller + @ResponseBody
- *                  (les méthodes retournent du JSON, pas des vues)
- * @RequestMapping : préfixe de toutes les URLs de ce controller
- * ================================================================
+  CONTROLLER AUTHENTIFICATION
+
+  @RestController : combine @Controller + @ResponseBody
+                   (les méthodes retournent du JSON, pas des vues)
+  @RequestMapping : préfixe de toutes les URLs de ce controller
  */
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -32,11 +29,11 @@ public class AuthController {
     private final AuthService authService;
 
     /**
-     * POST /api/v1/auth/register
-     * Inscription d'un nouvel utilisateur
-     *
-     * @Valid : déclenche la validation des annotations (@NotBlank, @Email...)
-     *          Retourne 400 Bad Request si validation échoue
+     POST /api/v1/auth/register
+      Inscription d'un nouvel utilisateur
+
+      @Valid : déclenche la validation des annotations (@NotBlank, @Email...)
+              Retourne 400 Bad Request si validation échoue
      */
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<AuthResponse>> register(
@@ -79,9 +76,7 @@ public class AuthController {
 
 
 /**
- * ================================================================
  * CONTROLLER TRAJETS
- * ================================================================
  */
 @RestController
 @RequestMapping("/api/v1/trajets")
@@ -162,16 +157,14 @@ class TrajetController {
 
 
 /**
- * ================================================================
  * CONTROLLER RÉSERVATIONS
- * ================================================================
  */
 @RestController
 @RequestMapping("/api/v1/reservations")
 @RequiredArgsConstructor
 class ReservationController {
 
-    private final com.buscam.service.ReservationService reservationService;
+    private final com.buscam2.Buscam2.service.ReservationService reservationService;
 
     /**
      * POST /api/v1/reservations

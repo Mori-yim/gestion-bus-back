@@ -7,9 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * ================================================================
  * ENTITÉ RÉSERVATION
- * ================================================================
  *
  * Relie un Utilisateur à un Trajet.
  * Contient le prix payé, le statut, et le numéro de billet unique.
@@ -17,7 +15,6 @@ import java.time.LocalDateTime;
  * Relations :
  *   - @ManyToOne User  : plusieurs réservations pour un même user
  *   - @ManyToOne Trajet: plusieurs réservations sur un même trajet
- * ================================================================
  */
 @Entity
 @Table(name = "reservations")
@@ -112,9 +109,7 @@ public class Reservation {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // ============================================================
     // ENUMS
-    // ============================================================
 
     public enum StatutReservation {
         EN_ATTENTE,   // Réservation créée, paiement non confirmé

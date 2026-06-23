@@ -15,16 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ================================================================
  * GESTIONNAIRE GLOBAL DES EXCEPTIONS
- * ================================================================
  *
  * @RestControllerAdvice : intercepte toutes les exceptions levées
  * dans n'importe quel controller et les transforme en réponses JSON.
  *
  * Sans ça, Spring renvoie des erreurs HTML (peu pratique pour React).
  * Avec ça, toutes les erreurs sont au format { success, message, data }.
- * ================================================================
  */
 @RestControllerAdvice
 @Slf4j

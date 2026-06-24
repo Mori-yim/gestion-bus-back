@@ -16,7 +16,6 @@ import java.util.List;
 
 /**
   CONTROLLER AUTHENTIFICATION
-
   @RestController : combine @Controller + @ResponseBody
                    (les méthodes retournent du JSON, pas des vues)
   @RequestMapping : préfixe de toutes les URLs de ce controller

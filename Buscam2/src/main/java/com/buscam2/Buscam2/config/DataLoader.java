@@ -15,15 +15,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * ================================================================
  * DATA LOADER - Données de démo au démarrage
- * ================================================================
  *
  * CommandLineRunner s'exécute automatiquement après le démarrage
  * de Spring Boot. Ici on injecte des données de démonstration.
  *
  * Utile pour les tests et les démonstrations lors d'un entretien !
- * ================================================================
  */
 @Configuration
 @RequiredArgsConstructor

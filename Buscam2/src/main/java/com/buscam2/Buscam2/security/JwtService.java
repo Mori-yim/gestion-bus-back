@@ -78,9 +78,7 @@ public class JwtService {
                 .compact();                                // Génère le String final
     }
 
-    // ============================================================
     // VALIDATION DU TOKEN
-    // ============================================================
 
     /**
      * Vérifie si un token est valide pour un utilisateur donné
@@ -99,9 +97,7 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    // ============================================================
     // EXTRACTION DES DONNÉES DU TOKEN
-    // ============================================================
 
     /**
      * Extrait l'email (username) du token JWT

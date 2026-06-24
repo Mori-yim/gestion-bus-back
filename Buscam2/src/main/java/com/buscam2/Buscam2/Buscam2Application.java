@@ -14,7 +14,8 @@ public class Buscam2Application {
                   BusCam API démarrée avec succès !
                   http://localhost:8080/api/v1
                   Swagger : http://localhost:8080/swagger-ui.html
-                ================================================
+                
+                
                 """);
 	}
 
